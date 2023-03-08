@@ -176,7 +176,7 @@ def update_emp(request):
         return HttpResponse("An exception ocured")
     
 
-def fetch_emp(request):
+def fetch_emp_by_id(request):
     try:
         if request.method=='GET':
             # Get the ID from the query parameter       
@@ -201,11 +201,16 @@ def fetch_emp(request):
                         for cell in row:
                             row_dict[cell.column_letter] = cell.value
 
-                        # Convert the dictionary to a JSON string
-                        json_data = json.dumps(row_dict)
-                        
-                        # Return the row as a JSON response
-                        return HttpResponse(json_data,content_type='application/json')
+                        emp_id=row_dict['A']
+                        application=row_dict['B']
+                        valuation=row_dict['C']
+                        budget=row_dict['D']
+
+                        emp_data=Data(id=emp_id,application=application,valuation=valuation,budget=budget)
+                        my_dict = {"id": emp_data.id, "application": emp_data.application,"valuation": emp_data.valuation,"budget": emp_data.budget}
+
+                        data = {'data': my_dict, 'status': 200}
+                        return JsonResponse(data, status=200, safe=False)
                     
                 error = {'error': "Id missing", 'status': 400}
                 return JsonResponse(error, status=400)
@@ -213,6 +218,53 @@ def fetch_emp(request):
             else:
                 error = {'error': "Id missing", 'status': 400}
                 return JsonResponse(error, status=400)
+       
+        error = {'error': "GET method required", 'status': 400}
+        return JsonResponse(error, status=400)
+    
+    except Exception as e:
+        error = {'error': str(e), 'status': 400}
+        return JsonResponse(error, status=400)
+
+def fetch_all_emp(request):
+    try:
+        if request.method=='GET':                
+            file_path=os.path.join(getExcelDirectory()+excel_file_name)
+            # Load the Excel file
+            workbook = openpyxl.load_workbook(file_path)
+            
+            emp_list=[]
+            # Select the first worksheet
+            worksheet = workbook.active
+            print("starting the loop")  
+            for row in worksheet.iter_rows(min_row=2):
+                row_dict = {}
+                for cell in row:
+                    row_dict[cell.column_letter] = cell.value
+
+                emp_id=row_dict['A']
+                application=row_dict['B']
+                valuation=row_dict['C']
+                budget=row_dict['D']
+
+                
+                emp_data=Data(id=emp_id,application=application,valuation=valuation,budget=budget)
+                emp_list.append(emp_data)
+            
+            
+            if len(emp_list)==0:
+                error = {'error': "No data found", 'status': 400}
+                return JsonResponse(error, status=400)
+            else:
+                # Convert the array of objects to a list of dictionaries
+                my_dicts = []
+                for obj in emp_list:
+                    my_dict = {"id": obj.id, "application": obj.application,"valuation": obj.valuation,"budget": obj.budget}
+                    my_dicts.append(my_dict)
+
+                data = {'data': my_dicts, 'status': 200}
+                return JsonResponse(data, status=200, safe=False)
+
        
         error = {'error': "GET method required", 'status': 400}
         return JsonResponse(error, status=400)
