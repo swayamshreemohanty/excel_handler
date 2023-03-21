@@ -1,18 +1,34 @@
 {
 	"info": {
-		"_postman_id": "1b025579-f2e9-4d3b-8129-2906dbcdcd0a",
+		"_postman_id": "f66ef7eb-ff18-409b-b962-1b02a58b7a28",
 		"name": "ExcelHandling",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "23683986"
 	},
 	"item": [
 		{
-			"name": "getData",
+			"name": "upload_excel_file",
 			"request": {
-				"method": "GET",
-				"header": [],
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-CSRFToken",
+						"value": "yZocROk9RnouToMKfVx5BuXPA08U00k1IlXPV5ftKeKurDTZ3lbjQA0SSkXjnBul",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "excel_file",
+							"type": "file",
+							"src": "/C:/Users/Swayamshree Mohanty/Desktop/excel_handler/demo.xlsx"
+						}
+					]
+				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/fetch_emp?id=5",
+					"raw": "http://127.0.0.1:8000/upload_excel",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -22,12 +38,99 @@
 					],
 					"port": "8000",
 					"path": [
-						"fetch_emp"
+						"upload_excel"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-CSRFToken",
+						"value": "yZocROk9RnouToMKfVx5BuXPA08U00k1IlXPV5ftKeKurDTZ3lbjQA0SSkXjnBul",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/login",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "fetch_all_emp",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/fetch_all_emp",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"fetch_all_emp"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "fetch_emp_by_id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/fetch_emp_by_id?id=7",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"fetch_emp_by_id"
 					],
 					"query": [
 						{
 							"key": "id",
-							"value": "5"
+							"value": "7"
 						}
 					]
 				}
@@ -35,7 +138,7 @@
 			"response": []
 		},
 		{
-			"name": "addData",
+			"name": "add_emp",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -50,17 +153,17 @@
 					"formdata": [
 						{
 							"key": "application",
-							"value": "update text 10",
+							"value": "NEW employee",
 							"type": "text"
 						},
 						{
 							"key": "valuation",
-							"value": "100",
+							"value": "950",
 							"type": "text"
 						},
 						{
 							"key": "budget",
-							"value": "150",
+							"value": "1502",
 							"type": "text"
 						}
 					]
@@ -83,29 +186,7 @@
 			"response": []
 		},
 		{
-			"name": "get_csrf_token",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://127.0.0.1:8000/get_csrf_token",
-					"protocol": "http",
-					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
-					],
-					"port": "8000",
-					"path": [
-						"get_csrf_token"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "updateData",
+			"name": "update_emp",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -119,8 +200,13 @@
 					"mode": "formdata",
 					"formdata": [
 						{
+							"key": "id",
+							"value": "1",
+							"type": "text"
+						},
+						{
 							"key": "application",
-							"value": "update ten 10",
+							"value": "update 9",
 							"type": "text"
 						},
 						{
@@ -130,12 +216,7 @@
 						},
 						{
 							"key": "budget",
-							"value": "750",
-							"type": "text"
-						},
-						{
-							"key": "id",
-							"value": "10",
+							"value": "800",
 							"type": "text"
 						}
 					]
@@ -152,6 +233,28 @@
 					"port": "8000",
 					"path": [
 						"update_emp"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get_csrf_token",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/get_csrf_token",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"get_csrf_token"
 					]
 				}
 			},
